@@ -1,0 +1,118 @@
+    1  docker run docker/whalesay cowsay Hello-World!
+    2  docker ls
+    3  docker ps
+    4  docker ps -a
+    5  docker stop 80b4ab2030d8
+    6  docker ps -a
+    7  docker stop busy_liskow
+    8  docker stop busy_liskov
+    9  docker ps -a
+   10  docker ps 
+   11  docker rm 80b4ab2030d8
+   12  docker images
+   13  docker rmi whalesay
+   14  docker rmi docker/whalesay
+   15  docker run kodeKloud/simple-webapp
+   16  docker run kodekloud/simple-webapp
+   17  docker ps
+   18  docker ps -a
+   19  history
+   20  docker rm adoring_newton
+   21  docker images
+   22  docker rmi kodekloud/simple-webapp
+   23  ls
+   24  docker ps -a
+   25  docker run centos
+   26  docker ps -a
+   27  docker run -it centos bash
+   28  docker ps
+   29  docker ps -a
+   30  docker run -d centos sleep 20
+   31  docker ps
+   32  docker ps -a
+   33  docker rm ad1 f64 834
+   34  docker ps -a
+   35  docker images
+   36  docker rmi centos
+   37  history
+   38  docker images
+   39  docker run kodekloud/simple-prompt-docker
+   40  docker run -i kodekloud/simple-prompt-docker
+   41  docker run -it kodekloud/simple-prompt-docker
+   42  docker ps
+   43  docker ps -a
+   44  docker inspect interesting_lehman
+   45  docker run -it kodekloud/simple-prompt-docker sleep 20
+   46  docker ps -a
+   47  docker rm confident_goldberg
+   48  docker rm interesting_lehmann
+   49  docker rm charming_lederberg
+   50  docker rm stoic_meitner
+   51  ls
+   52  docker ps
+   53  docker run ubuntu
+   54  docker ps -a
+   55  pwd
+   56  ls
+   57  cd Downloads/
+   58  ls
+   59  mkdir jenk_home
+   60  cd pwd
+   61  pwd
+   62  cd jenk_home/
+   63  pwd
+   64  docker run -p 8080:8080 -p 5000:5000 -v -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins
+   65  docker run -p 8080:8080 -p 5000:5000 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins
+   66  cd ../..
+   67  docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins
+   68  docker pull jenkins
+   69  docker images
+   70  docker rmi kodekloud/simple-prompt-docker
+   71  ls
+   72  docker images
+   73  clear
+   74  docker pull hello-world
+   75  docker images
+   76  docker rmi hello-world
+   77  docker pull jenkins
+   78  docker pull jenkins:alpine
+   79  docker pull jenkins:2.60.3
+   80  docker images
+   81  docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins
+   82  docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins:2.60.3
+   83  sudo docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins:2.60.3
+   84  sudo docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home jenkins:2.60.3
+   85  sudo docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home -u root jenkins:2.60.3
+   86  ls
+   87  cd Documents/
+   88  ls
+   89  cd ../Downloads/
+   90  ls
+   91  cd jenk_home/
+   92  ls
+   93  cd jobs
+   94  ls
+   95  cd first
+   96  cd FirstJob/
+   97  ls
+   98  nano config.xml 
+   99  ls
+  100  cd ~home
+  101  cd ~/home
+  102  cd ../../..
+  103  cd ..
+  104  ls
+  105  sudo docker run -p 8080:8080 -v /home/cloud_user/Downloads/jenk_home:/var/jenkins_home -u root jenkins:2.60.3
+  106  ls
+  107  df -u
+  108  du
+  109  df -u 
+  110  df
+  111  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  112  sudo chmod +x /usr/local/bin/docker-compose
+  113  docker-compose --version
+  114  ls
+  115  docker history
+  116  history
+  117  pwd
+  118  history > mycommands.txt
