@@ -1,0 +1,115 @@
+EC2 Fail Reaseons
+	InstanceLimitExceeded Error: 
+		Num of Instances allowed in a region (20 by default)
+		Resolve: either reserve less than 20 or increase capacity
+	InsufficientInstanceCapacity Error: 
+		AWS does not have on-demand capacity currently
+		Resolve: 
+			Wait for some time and try again
+			Request fewer instances
+			Select different Instance Type
+			Try purchasing reserved instance
+			Submit new req without specifying AZ
+			
+EBS Volumes and IOPS:
+	2 variants of SSD
+		gp2 - General Purpose - Boot Volumes
+		io1 - Provisioned IOPS - I/O intensive, NoSQL/Relational Databases,
+								Latency sensitive Workloads
+	IOPS capacity dependent on Volume Size
+		gp2 - (min 100 IOPS) 3 IOPS/GB upto max of 16000 IOPS
+		io1 - 50 IOPS/GB upto max of 64000 IOPS 
+	Hitting IOPS limit of volume:
+		I/O req queuing
+		Depending on IOPS sensitivity to IOPS and Latency, app may become slow
+		Resolution:
+			For Gp2 - Increase the size of volume (upto 5.2TB i.e 16000 IOPS)
+						Else, change storage class to Provisioned IOPS
+
+Bastion Host
+	Jump box
+	Limit ports to SSH or RDP
+	Allow only know IP
+
+ELB 101
+	ALB (Application Load Balancer) - Intelligent
+		Layer 7
+		Inspect packet (ex http headers) and make intelligent routing dicisions. 
+		Content Based Routing
+	NLB (Network Load Balancer) - Fast
+		Layer 4
+		Performance and speed
+	CLB (Classic/Legacy)
+		Layer 7(basic) and Layer 4
+		X-Forwarded and Sticky Sessions
+	Pre-Warming Load Balancers: (only for burst increase)
+		It will configure the ELB to appropriate level of capacity
+		AWS will need to know:
+			Start and end Dates
+			Expected request rate/s
+			Total size of request
+	Load Balancers and static IP addresses
+		ALB - Scale automatically (but IP change where client have to connect to new ALB)
+		NLB - solves this issue, by creating a static IP in each subnet so that keeps firewall
+		Rules simple, client only need to enable access to a single IP address per subnet. 
+		(Put ALB behind NLB)
+	
+ELB Error Messages:
+	Success is 200
+	Unsuccessfull messages 4xx(client side) and 5xx(Server side)
+	400 - Bad/Malformed - Ex Header is malformed 
+	401 - Unauthorized - Ex user access denied
+	403 - Forbidden - Ex Request is blocked by WAF
+	460 - TimeOut - Ex Client closd conn before ELB responds, TO might be too short
+	463 - Too many forwards - ELB received X-Forwarded-For request >30 IPs (like malformed)
+	500 - Internal server error - ELB side error
+	502 - Badgateway - App server closed connection or sent back malformed response
+	503 - Service Unavailable - No registered Targets
+	504 - Gateway Timeout - App not responding, problem with App server, Web server or DB server
+	561 - Unauthorized - Received an error code from the ID Provider when trying to authenticate a user.
+	
+ELB CloudWatch Metrics:
+	ELB publishes metrics for ELB and Backend instances by default
+	CloudWatc Alarm: Metric reaches a predefined limit/range
+	Metrics gathered in 60secs interval
+	Overall Health:
+		BackendConnectionErrors - num of unsuccessful connections to BE instances
+		HealthyHostCount - num of healthy instances registered
+		UnhealthyHostCount - num of unhealthy instances
+		HTTPCode_Backend_2xx,3xx,4xx,5xx
+	Performance Metrics:
+		Latency - of registered instances
+		RequestCount - num of req commpleted / connection made for given interval
+		SurgeQueueLength - num of pending requests, max size 1024, additional req rejected (classic only).
+		SpilloverCount - num of req rejected because the surge queue is full (classic only).
+		High SurgeQueueLength and SpilloverCount indicate performance issue, need to scale infrastructure. 
+		
+Systems Manager 101 (SSM)
+	Management Tool - Gives visibility and control over your entire AWS Infrastructure
+	Integrates with CloudWatch - View dashboard, view operational data and detect problems
+	Run Command - automates operational task across resources - eg security patching, Package install etc
+		pre-defined commands on one or more EC2 instances
+		stop, resize, terminate, re-size instances
+		Attach/detach EBS volumes
+		Create snapshot, backup DynamoDB tables
+		Apply patches and updates
+		Run an ansible playbook
+		Run a shell script
+		
+	Organize your inventory - grouping resources together by application/env including On-Prem
+	
+Placement Groups:
+	Cluster Groups - Instance created in Single AZ
+	Partition Groups - Instances are created in Partitions (separate racks with independent nw and power)
+	Spread - Each instance created in separate racks with independent nw and Power
+	
+	
+	
+	
+	
+	
+
+
+	
+
+	
