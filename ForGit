@@ -1,0 +1,153 @@
+Storage and Data Management
+	S3 Lifecycle Policies
+		Used to ensure the cost effective option for objects in S3
+		Lifecycle rules are based on Object creation date
+		S3 can send --> IA/Glacier (based on config)
+		Object expiry --> to delete after specified time
+	MFA Delete:
+		S3 versioning --> like git (protects from accidental delete, my applying delete marker)
+		To permanently delete, provide Object version ID in delete Request
+		MFA delete provides additional level of Protection to S3 Versioning
+			Enforces 2 things:
+				Valid MFA code required to delete
+				Valid MFA code required to suspend/reactivate versioning 
+	S3 Encryption:
+		In transit: SSL/TLS
+		At Rest: 
+			Server Side:
+				S3 Managed Keys - SSE-S3
+				AWS Key Management Service, Managed Keys, SSE-KMS
+				Server Side Encryption with customer provided keys - SSE-C
+			Client Side Encryption
+		To upload a file to S3 --> PUT Request in initiated
+		Sample PUT Request:
+			PUT /myFile HTTP/1.1
+			Host: myBucket.s3.amazonaws.com
+			Date: Wed, 25 Apr 2021 09:50:00 GMT
+			Authorization: authorization string
+			Content-Type: text/plain
+			Content-Length: 27364
+			x-amz-meta-author: Shada
+			Expect: 100-continue --> S3 can reject upload based on header only
+			[27364 bytes of meta data]
+		Enforcing Encryption on S3 bucket
+			File encrypted at upload: x-amz-server-side-encryption (included in header)
+				x-amz-server-side-encryption: AES256 (SSE-S3 - S3 Managed Keys)
+				x-amz-server-side-encryption: ams:kms (SSE-KMS - KMS managed keys)
+			Upload can be denied by adding Bucket Policy to deny PUT without x-amz-server-side-encryption in req header
+				Example:
+				PUT /myFile HTTP/1.1
+				Host: myBucket.s3.amazonaws.com
+				Date: Wed, 25 Apr 2021 09:50:00 GMT
+				Authorization: authorization string
+				Content-Type: text/plain
+				Content-Length: 27364
+				x-amz-meta-author: Shada
+				x-amz-server-side-encryption: AES256
+				Expect: 100-continue 
+				[27364 bytes of meta data]
+		
+EC2 Volume Types:
+	Instance Store/Ephemeral Storage --> Temp (old type)
+	EBS --> Persistent
+	Volume types:
+		Root Volume: where OS is
+		Additional Volume: D:\,E:\ or /dev/sdb,/dev/sdc
+	EBS:
+		Root device will be terminated by default (if uncheckedin UI /deleteontermination=false in CLI, not deleted)
+		Attached Volumes --> persistant
+	Instance Store: 
+		Like RAM behaviour --> non persistant
+		Instance Reboot--> data gone
+			Like Failure of underlying Drive
+			Stopping of AWS EBS-backed instance (in case of aatched instance store volume)
+			Terminating an instance
+		Screenshot here
+		
+	EBS Volumes can be changed on the fly (Except for Magnetic standard)
+	Best Practice is to stop EC2 instance and then change volume
+	You can change Volume type by takeing snapshot and then using the snapshot to create a new volume 
+	If volume is changed on fly --> wait 6hours before making another change
+	Scale EBS volume up only
+	Volumes must be in same AZ as the EC2 Instance
+
+Encryption and Downtime:
+	Mostly Enabled at creation only:
+		EFS - Create new encrypted FS and then migrate data
+		RDS - Create new encrypted DB and then migrate data
+		EBS Volumes - Cannot change encryption once created 
+			migrate data btw Encrypted <--> Unencrypted Possible (rsync/robocopy)
+	S3/Object --> Encrypt or decrypt any time (no impact on app)
+
+KMS vs CloudHSM
+	Both are used to generate, store and manage cryptographic keys used to protect your data
+	KMS:
+		Shared HW, Multi-tenant managed services
+		Allows you to generate, store and manage your encryption keys
+		Suitable for Apps for which multi-tenancy is not an issue
+		Free-tier eligible
+		Encrypt data stored in AWS like EBS,S3, RDS and DynamoDB
+		Used symmetric keys (same to encrypt/decrypt)
+	CloudHSM:
+		Dedicated HSM (hardware security module)
+		HW is Single Tenant
+		No Free Tier
+		Exclusive conrol within your own VPC
+		FIPS 140-2 Lev3 compliance (US Gov - Temper evident Physical security mechanisms)
+		Suitable for Apps having regulatory requirement for dedicated HW (Ex Creditcard, Banking) 
+		Use cases:
+			DRM, Public keys Infrastructure (PKI), authentication/authorization, document signing and transaction processing
+
+AMIs
+	Amazon Machine Image --> all info needed to launch EC2
+		Template for root volume: OS/Apps etc
+		Launch Permission:  defining Which AWS account can use the AMI to launch instances
+		Block device mapping: to specify EBS Volumes to attach to the instance at launch time
+	Custom AMI:
+		Launch an instance from an existing AMI
+		Connect to ur Instance and cusomize it (install apps, copy data etc)
+		Create a custom AMI image from your instance 
+		Your AMI must be registered before it can be used to launch an instance
+	AMI are registered per-region basis:
+		if AMI in us-east-1, to use it in us-west-1, need to copy  it to us-west-1 to use it
+
+Sharing AMI:
+	AMI can be shared and copied between user accounts
+	2 restrictions:
+		Encrypted AMIs
+			Copy the underlying snapshot, re-encrypt using your own key and 
+			create a new AMI from the snapshot
+		AMI with an associated billingProducts code(eg Windows AMIs, RedHat, AWS MArketplace AMIs)
+			Launch an EC2 instance using the shared AMI and create an AMI from the instance
+			
+Snowball and Snowball Edge
+	Snowball is for Data Transfer Only
+		256 bit encription
+		Region specific transfers (one region only)
+	Snowball Edge provides Edge computing in addition to data transfer
+	If you have 100s of TB to upload or your data is taking a few days to upload - you need snowball
+	snowball edge --> 
+		need to process the data locally before returnig the device to AWS
+		100TB
+		Can be formed as cluster to act as single storage/compute
+		S3 bucket/Lambda functions preconfigured (On Request)
+		
+Storage Gateway:
+	
+	
+	
+		
+	
+	
+		
+		
+		
+	
+		
+	
+	
+		
+	
+		
+		
+		
