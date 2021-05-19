@@ -1,0 +1,28 @@
+    1  clear
+    2  ls
+    3  wget http://apt.puppetlabs.com/puppet6-release-bionic.deb
+    4  dpkg -i puppet6-release-bionic.deb 
+    5  apt update
+    6  ls
+    7  rm puppet6-release-bionic.deb 
+    8  ls
+    9  nano /etc/host
+   10  nano /etc/hosts
+   11  apt-get install puppetserver
+   12  cd /etc/puppetlabs/
+   13  ls
+   14  cd puppet
+   15  ls
+   16  nano puppet.conf 
+   17  cd /
+   18  nano /etc/default/puppetserver 
+   19  clear
+   20  puppetserver
+   21  /opt/puppetlabs/bin/puppetserver ca setup
+   22  systemctl start puppetserver
+   23  systemctl status puppetserver
+   24  systemctl enable puppetserver
+   25  sudo -i
+   26  ls
+   27  git
+   28  history > PuppetMaster.txt
